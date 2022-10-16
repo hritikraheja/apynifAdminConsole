@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/Login.css";
 import apynifLogo from "../assets/apynifLogo.png";
 import loginScreenImage from "../assets/loginScreenImage.png";
+import {auth} from './InitializeFirebaseAuth.js'
 
 function Login() {
   const [email, setEmail] = useState("");
