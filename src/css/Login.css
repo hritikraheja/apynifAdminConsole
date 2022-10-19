@@ -171,6 +171,10 @@
     font-size: 12px;
 }
 
+#loginPageRight #formDiv a{
+    text-decoration: none;
+}
+
 #forgotPasswordButton{
     font-family: 'Urbanist', sans-serif;
     font-size: 14px;
@@ -204,4 +208,18 @@
 
 #signInButton:hover{
     transform: scale(1.1);
+}
+
+#signInButton:disabled{
+    opacity: 0.6;
+    cursor: no-drop;
+    display: flex;
+    justify-content: center;
+    line-height: 38px;
+}
+
+#signInButton:disabled .loadingAnimation{
+    margin-right: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
 }

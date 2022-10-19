@@ -3,23 +3,17 @@ import "../css/Login.css";
 import apynifLogo from "../assets/apynifLogo.png";
 import loginScreenImage from "../assets/loginScreenImage.png";
 import {auth} from './InitializeFirebaseAuth.js'
+import ReactLoading from 'react-loading'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import {Link} from 'react-router-dom'
 
-function Login() {
+function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
-  const [showPassword, setShowPassword] = useState(false)
-
-  function onSubmitHandler(e) {
-    e.preventDefault()
-    const emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    if(!emailValidationRegex.test(email)){
-      setInvalidEmail(true);
-      return;
-    }
-
-  }
+  const [showPassword, setShowPassword] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
 
   function onEmailChangeHandler(e){
     setEmail(e.target.value)
@@ -33,6 +27,33 @@ function Login() {
     if(invalidPassword){
       setInvalidPassword(false)
     }
+  }
+
+  function onSubmitHandler(e) {
+    e.preventDefault()
+    const emailValidationRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    if(!emailValidationRegex.test(email)){
+      setInvalidEmail(true);
+      return;
+    }
+    setSigningIn(true)
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredentials) => {
+      sessionStorage.setItem('loggedInUser', email);
+      props.createSuccessNotification('Logged in successfully!')
+      props.reRender()
+      setSigningIn(false)
+    })
+    .catch((err) => {
+      if(err.code == 'auth/user-not-found'){
+        props.createErrorNotification('User not found!')
+      } else if (err.code == 'auth/wrong-password'){
+        setInvalidPassword(true)
+      } else {
+        props.createErrorNotification('Firebase error!')
+      }
+      setSigningIn(false)
+    })
   }
 
   return (
@@ -63,8 +84,8 @@ function Login() {
               </div>
               {invalidPassword && <p id="invalidInput">Your password was incorrect</p>}
             </div>
-            <button type="button" id="forgotPasswordButton">Forgot Password?</button>
-            <button type="submit" id="signInButton">Sign In</button>
+            <Link to={'/forgot-password'}><button type="button" id="forgotPasswordButton">Forgot Password?</button></Link>
+            <button type="submit" id="signInButton" disabled = {signingIn}>{signingIn && <ReactLoading className="loadingAnimation" type='spinningBubbles' color="white" width='25px' height='25px'></ReactLoading>}{signingIn ? 'Signing In' : 'Sign In'}</button>
           </form>
         </div>
       </div>
