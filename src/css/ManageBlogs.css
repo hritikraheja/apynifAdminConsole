@@ -1,0 +1,407 @@
+#manageBlogs{
+    width: 70%;
+    margin : 40px 5%;
+}
+
+#addBlogDiv{
+    width: 80%;
+    /* margin: 60px 5%; */
+    padding: 60px 5%;
+}
+
+#manageBlogs #head, #addBlogDiv #head{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+}
+
+#manageBlogs #subHead, #addBlogDiv #subHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #a3a3a3;
+}
+
+#manageBlogs #subHead span, #addBlogDiv #subHead span{
+    color: #0f0532;
+    cursor: pointer;
+}
+
+#manageBlogs #header{
+    width: 100%;
+    display: flex;
+}
+
+#manageBlogs #header #searchBox{
+    width: 40%;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #d1daeb;
+    display: flex;
+    margin-right: 40px;
+}
+
+#manageBlogs #header #searchBox input{
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+}
+
+#manageBlogs #header #searchBox input:placeholder{
+    color: #0f0532;
+    font-family: 'Urbanist', sans-serif;
+}
+
+#manageBlogs #header #searchBox i{
+    color: #0f0532;
+    font-size: 18px;
+    margin: auto 10px;
+}
+
+#manageBlogs #header #filters{
+    border: 1px solid #d1daeb;
+    border-radius: 8px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+}
+
+#manageBlogs #header #filters i{
+    font-size: 28px;
+    line-height: 50px;
+}
+
+#manageBlogs #header a {
+    margin-left: auto;
+}
+
+#manageBlogs #header a button{
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    padding: 0px 10px;
+    color: white;
+    background-image: linear-gradient(100deg, #02fccf -38%, #1448ff 99%);
+}
+
+#manageBlogs #header button:focus{
+    outline: none;
+    border: none;
+}
+
+#manageBlogs #header button:hover{
+    transform: scale(1.1);
+}
+
+#manageBlogs #header button i{
+    font-size: 22px;
+    color: white;
+    margin-right: 10px;
+}
+
+.loadingAnimation{
+    display: block;
+    margin: 75px auto;
+}
+
+#blogsContent, #blogsContent table{
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+#blogsContent table th{
+    background-color: #f4f8f7;
+    font-family: 'Urbanist', sans-serif;
+    text-align: left;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+#blogsContent #blog{
+    outline: 1px solid #d1daeb;
+    border-radius: 6px;
+}
+
+#blogsContent #blog:hover{
+    border: none;
+    background-color:#D5E4E0;
+    cursor: auto;
+}
+
+#blogsContent table td{
+    padding: 10px 20px;
+    text-align: left;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 15px;
+    border: none;
+    font-weight: 500;
+}
+
+#blogsContent table td #editButton{
+    color: white;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+#blogsContent table td #editButton:hover{
+    transform: scale(1.2);
+}
+
+#noBlogsPrompt{
+    font-size: 22px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 500;
+    margin-top: 100px;
+}
+
+#addBlogDiv #blogDetailsHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+    margin-top: 40px;
+}
+
+#blogDetailsForm{
+    width: 100%;
+}
+
+#titleAndCategoryInput{
+    display: flex;
+    padding: 0px 20px;
+    margin-top: 30px;
+}
+
+#titleAndCategoryInput p{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+}
+
+#titleAndCategoryInput #titleInput{
+    width: 42%;
+}
+
+#titleAndCategoryInput #titleInput input{
+    width: 100%;
+    height: 50px;
+    border: 1px solid #d1daeb;
+    text-indent: 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+#titleAndCategoryInput #titleInput input:hover, #titleAndCategoryInput #titleInput input:focus{
+    outline: none;
+}
+
+#titleAndCategoryInput #categoryInput{
+    width: 42%;
+    margin-left: auto;
+}
+
+#titleAndCategoryInput #categoryInput select{
+    width: 100%;
+    height: 50px;
+    border: 1px solid #d1daeb;
+    padding: 0px 5px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 12px;
+}
+
+#titleAndCategoryInput #categoryInput select:hover, #titleAndCategoryInput #categoryInput select:focus{
+    outline: none;
+}
+
+#blogContentInput, #blogImageInput{
+    display: block;
+    padding: 0px 20px;
+    margin-top: 40px;
+}
+#blogContentInput p, #blogImageInput p{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+}
+
+#blogContentInput textarea{
+    width: 100%;
+    height: 300px;
+    border: 1px solid #d1daeb;
+    text-indent: 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+#blogContentInput textarea:hover, #blogContentInput textarea:focus{
+    outline: none;
+}
+
+#blogImageInput #loaderDiv{
+    width: 100%;
+    border: 1px solid #d1daeb;
+    text-indent: 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    padding: 0px;
+    display: block;
+    border-radius: 12px;
+}
+
+#blogImageInput #addBlogButtonDiv{
+    width: 100%;
+    border: 1px solid #d1daeb;
+    text-indent: 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    padding: 80px;
+    display: block;
+    border-radius: 12px;
+}
+
+#blogImageInput #addBlogButtonDiv #addNewBlogButton{
+    height: 50px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    padding: 0px 10px;
+    color: white;
+    background-image: linear-gradient(100deg, #02fccf -38%, #1448ff 99%);
+}
+
+#blogImageInput #addBlogButtonDiv #addNewBlogButton:focus{
+    outline: none;
+    border: none;
+}
+
+#blogImageInput #addBlogButtonDiv #addNewBlogButton:hover{
+    transform: scale(1.1);
+}
+
+#blogImageInput #addBlogButtonDiv #addNewBlogButton i{
+    font-size: 22px;
+    color: white;
+    margin-right: 10px;
+}
+
+#addBlogDiv #buttonsDiv{
+    display: flex;
+    width: 80%;
+    margin-top: 40px;
+    padding: 0px 20px;
+}
+
+#addBlogDiv #buttonsDiv button{
+    width: 220px;
+    height: 50px;
+    color: white;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#addBlogDiv #buttonsDiv button:disabled{
+    cursor: no-drop;
+    background-color: #747681;
+    background-image: none;
+    color: white;
+}
+
+#addBlogDiv #buttonsDiv a button{
+    width: 220px;
+    height: 50px;
+    color: #8a8a8a;
+    background: none;
+    outline: none;
+    border: 1px solid #cccccc;
+    padding: 5px 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-left: 50px;
+}
+
+#addBlogDiv #buttonsDiv button:nth-of-type(1):hover, #addBlogDiv #buttonsDiv button:nth-of-type(2):hover{
+    transform: scale(1.1);
+}
+
+#uploadedImageDiv{
+    display: block;
+    position: relative;
+    margin: 20px 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    border: 1px solid #d1daeb;
+    border-radius: 12px;
+}
+
+#uploadedImageDiv img{
+    max-width: 100%;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#uploadedImageDiv button{
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    background : none;
+    color: red;
+    border: none;
+    font-size: 22px;
+    display: none;
+    outline: none;
+}
+
+#uploadedImageDiv:hover button{
+    display: block;
+}
+
+#uploadedImageDiv button:hover{
+    transform: scale(1.2);
+}

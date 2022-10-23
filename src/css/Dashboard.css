@@ -1,3 +1,11 @@
+#dashboard{
+    position: relative;
+}
+
+#dashboard a{
+    text-decoration: none;
+}
+
 #dashboard nav{
     height: 60px;
     width: 100%;
@@ -18,20 +26,133 @@
 }
 
 #content{
-    display: flex;
+    position: absolute;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
+    display: flex;
 }
 
 #navigationContent{
+    width: max-content;
     width: 100%;
-    height: max-content;
+    height: 100%;
 }
 
 #sideNav{
     display: block;
-    border: 1px solid black;
+    background-color: #f4f8f7;
     width: fit-content;
     height: 100%;
+}
+
+
+#sideNav ul{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    background-color: #D5E4E0;
+    margin: 0px 6px;
+}
+
+#sideNavHead {
+    display: flex;
+    height: 60px;
+}
+
+#sideMenuItem{
+    display: flex;
+    height: 60px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+#sideMenuItemLogoOpen{
+    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    line-height: 60px;
+    display: block;
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+#sideMenuItemLogoClose{
+    font-size: 28px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: auto 20px;
+    cursor: pointer;
+}
+
+#sideMenuItemText{
+    width: 200px;
+    display: flex;
+}
+
+#sideMenuItemText p{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    margin: auto 0px;
+}
+
+#sideMenuItemText i{
+    font-size: 18px;
+    margin: auto 20px auto auto;
+    cursor: pointer;
+}
+
+.activeItem{
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    color: white;
+}
+
+.notActiveItem{
+    color: #04091e;
+}
+
+
+#greenDotActive{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
+    margin-top: auto;
+    margin-left: -25px;
+    margin-right: 15px;
+    position: static;
+}
+
+#greenDotNotActive{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: green;
+    margin-top: auto;
+    margin-left: -35px;
+    position: static;
+}
+
+#lostDiv{
+    display: block;
+    margin-top: 100px;
+}
+
+#lostDiv span{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 100px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+#lostDiv p{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 22px;
 }

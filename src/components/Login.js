@@ -85,7 +85,7 @@ function Login(props) {
               {invalidPassword && <p id="invalidInput">Your password was incorrect</p>}
             </div>
             <Link to={'/forgot-password'}><button type="button" id="forgotPasswordButton">Forgot Password?</button></Link>
-            <button type="submit" id="signInButton" disabled = {signingIn}>{signingIn && <ReactLoading className="loadingAnimation" type='spinningBubbles' color="white" width='25px' height='25px'></ReactLoading>}{signingIn ? 'Signing In' : 'Sign In'}</button>
+            <button type="submit" id="signInButton" disabled = {signingIn}>{signingIn && <ReactLoading className="loadingAnimation" type='spinningBubbles' color="white" width='25px' height='25px'></ReactLoading>}<p>{signingIn ? 'Signing In' : 'Sign In'}</p></button>
           </form>
         </div>
       </div>

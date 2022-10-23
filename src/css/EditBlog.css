@@ -1,0 +1,320 @@
+#blogDetailsDiv{
+    width: 80%;
+    /* margin: 60px 5%; */
+    padding: 60px 5% 100px;
+}
+
+#blogDetailsDiv #head{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+}
+
+#blogDetailsDiv #subHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #a3a3a3;
+}
+
+#blogDetailsDiv #subHead span{
+    color: #0f0532;
+    cursor: pointer;
+}
+
+#blogDetailsDiv #blogDetailsHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+    margin-top: 40px;
+}
+
+#blogDetailsDiv #titleAndCategory{
+    display: flex;
+}
+
+#blogDetailsDiv #titleAndCategory p{
+    margin: auto;
+    text-align: left;
+    font-size: 16px;
+    color: #0f0532;
+    font-weight: 600;
+    font-family: 'Urbanist', sans-serif;
+}
+
+#blogDetailsDiv #titleAndCategory p:nth-of-type(1){
+    width: 60%;
+}
+
+#blogDetailsDiv #titleAndCategory p:nth-of-type(2){
+    width: 30%;
+    margin-left: 10%;
+}
+
+#blogDetailsDiv #titleAndCategory p span{
+    color: #0f0532;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#blogDetailsDiv #blogContentLabel, #blogDetailsDiv #blogImageLabel{
+    width: 100%;
+    margin: 30px 0px 15px;
+    text-align: left;
+    font-size: 16px;
+    color: #0f0532;
+    font-weight: 600;
+    font-family: 'Urbanist', sans-serif;
+}
+
+#blogDetailsDiv #blogContent{
+    width: 90%;
+    text-align: justify;
+    font-size: 16px;
+    color: #0f0532;
+    font-weight: normal;
+    font-family: 'Urbanist', sans-serif;
+}
+
+#blogDetailsDiv #blogImage{
+    max-width: 90%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 220px;
+    border-radius: 12px;
+}
+
+#blogDetailsDiv #buttonsDiv{
+    display: flex;
+    width: 80%;
+    margin-top: 100px;
+    padding: 0px 20px;
+}
+
+#blogDetailsDiv #buttonsDiv button{
+    width: 220px;
+    height: 50px;
+    color: white;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#blogDetailsDiv #buttonsDiv a button{
+    width: 220px;
+    height: 50px;
+    color: #8a8a8a;
+    background: none;
+    outline: none;
+    border: 1px solid #cccccc;
+    padding: 5px 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-left: 50px;
+}
+
+#blogDetailsDiv #buttonsDiv button:nth-of-type(1):hover, #blogDetailsDiv #buttonsDiv button:nth-of-type(2):hover{
+    transform: scale(1.1);
+}
+
+#editBlogDiv{
+    width: 80%;
+    /* margin: 60px 5%; */
+    padding: 60px 5% 100px;
+    position: relative;
+}
+
+#editBlogDiv #head{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+}
+
+#editBlogDiv #subHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #a3a3a3;
+}
+
+#editBlogDiv #subHead span{
+    color: #0f0532;
+    cursor: pointer;
+}
+
+#editBlogDiv #blogDetailsHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color : #0f0532;
+    margin-top: 40px;
+}
+
+#editBlogDiv #blogContentInput textarea{
+    padding: 15px;
+    text-align: justify;
+}
+
+#editBlogDiv #uploadedImageDiv i{
+    color: #0f0532;
+    background-color: #fff;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+#editBlogDiv #buttonsDiv{
+    display: flex;
+    width: 80%;
+    margin-top: 100px;
+    padding: 0px 20px;
+}
+
+#editBlogDiv #buttonsDiv button{
+    width: 220px;
+    height: 50px;
+    color: white;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#editBlogDiv #buttonsDiv a button{
+    width: 220px;
+    height: 50px;
+    color: #8a8a8a;
+    background: none;
+    outline: none;
+    border: 1px solid #cccccc;
+    padding: 5px 10px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
+    border-radius: 8px;
+    margin-left: 50px;
+}
+
+#editBlogDiv #buttonsDiv button:nth-of-type(1):hover, #editBlogDiv #buttonsDiv button:nth-of-type(2):hover{
+    transform: scale(1.1);
+}
+
+#editBlogDiv #buttonsDiv button:disabled{
+    cursor: no-drop;
+    background-color: #747681;
+    background-image: none;
+    color: white;
+    font-weight: normal;
+}
+
+#editBlogDiv #deleteBlogButton{
+    position: absolute;
+    top: 70px;
+    right: 6%;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: larger;
+    border-radius: 4px;
+    outline: none;
+}
+
+#editBlogDiv #deleteBlogButton:hover, #editBlogDiv #deleteBlogButton:focus{
+    transform: scale(1.1);
+}
+
+#editBlogDiv #dialogDiv{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(51,51,51,0.7);
+    z-index: 10;
+}
+
+#editBlogDiv #deleteBlogDialog, #editBlogDiv #updateBlogDialog{
+    width: 500px;
+    margin-top: 100px;
+    border: none;
+    outline: none;
+    padding: 30px;
+}
+
+#editBlogDiv #deleteBlogDialog #head, #editBlogDiv #updateBlogDialog #head{
+    font-size: 28px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 600;
+}
+
+#editBlogDiv #deleteBlogDialog #subhead, #editBlogDiv #updateBlogDialog #subhead{
+    font-size: 18px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: normal;
+    text-align: left;
+}
+
+#editBlogDiv #deleteBlogDialog #buttonsDiv, #editBlogDiv #updateBlogDialog #buttonsDiv{
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+#editBlogDiv #deleteBlogDialog #buttonsDiv button, #editBlogDiv #updateBlogDialog #buttonsDiv button{
+    width: 150px;
+    height: 40px;
+}
+
+#editBlogDiv #deleteBlogDialog #buttonsDiv button:nth-of-type(1), #editBlogDiv #updateBlogDialog #buttonsDiv button:nth-of-type(1){
+    margin-right: 30px;
+    background: none;
+    border: 1px solid #d1daeb;
+    color: #0f0532;
+}
