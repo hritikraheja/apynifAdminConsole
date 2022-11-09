@@ -41,7 +41,7 @@ function Login(props) {
     .then((userCredentials) => {
       sessionStorage.setItem('loggedInUser', email);
       props.createSuccessNotification('Logged in successfully!')
-      props.reRender()
+      window.location = './'
       setSigningIn(false)
     })
     .catch((err) => {

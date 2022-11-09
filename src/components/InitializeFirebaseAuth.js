@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
-import { getDatabase } from 'firebase/database'
+import { getDatabase, ref, update } from 'firebase/database'
 import { getStorage} from 'firebase/storage'
 
 const firebaseConfig = {
@@ -17,4 +17,19 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app)
 const auth = getAuth(app)
 const bucket = getStorage(app)
-export {auth, db, bucket}
+
+function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
+  var txnDetails = {
+    activity : activity,
+    address : userAddress, 
+    txnHashes : txnHashes,
+    admin : admin,
+    dateAndTime : new Date()
+  }
+
+  update(ref(db, `adminTransactions/${Date.now()}`), txnDetails).then(() => {
+    window.alert('Updated successfully!');
+  })
+}
+
+export {auth, db, bucket, writeAdminTxnInDatabase}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "../css/ManageBlogs.css";
 import { ref, update, onValue } from "firebase/database";
 import {ref as storageBucketReference, getDownloadURL, uploadBytesResumable} from 'firebase/storage'
-import { db, bucket } from "../components/InitializeFirebaseAuth.js";
+import { db, bucket } from "./InitializeFirebaseAuth.js";
 import ReactLoading from "react-loading";
 import { Link, useParams, useLocation } from "react-router-dom";
 import EditBlog from "./EditBlog";
@@ -15,6 +15,7 @@ function ManageBlogs(props) {
   const [content, setContent] = useState(null);
   const [images, setImages] = useState([]);
   const [imageUploading, setImageUploading] = useState(false);
+  const [searchBoxQuery, setSearchBoxQuery] = useState('')
   const { param } = useParams();
   const query = new URLSearchParams(useLocation().search);
   const uploadFileRef = useRef();
@@ -34,6 +35,7 @@ function ManageBlogs(props) {
               console.log("Data Not Found");
             }
     })
+    setSearchBoxQuery('')
   }, []);
 
   const uploadImageOnChange = async (e) => {
@@ -110,6 +112,16 @@ function ManageBlogs(props) {
     })
   }
 
+  function blogsSearchQuery(){
+    let result = []
+    blogs.map((val, key) => {
+      if(!searchBoxQuery || searchBoxQuery == '' || (searchBoxQuery != '' && (val.blogTitle.toLowerCase().includes(searchBoxQuery.toLowerCase()) || val.blogContent.toLowerCase().includes(searchBoxQuery.toLowerCase()) || val.blogCategory.toLowerCase().includes(searchBoxQuery.toLowerCase())))){
+        result = [...result, val]
+      }
+    })
+    return result
+  }
+
   return (
     <>
       {param == "manageBlogs" && !query.get("blogId") && (
@@ -124,7 +136,7 @@ function ManageBlogs(props) {
           <div id="header">
             <div id="searchBox">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" placeholder="Search"></input>
+              <input type="text" defaultValue={searchBoxQuery} placeholder="Search" onChange={(e)=>setSearchBoxQuery(e.target.value)}></input>
             </div>
             <p id="filters">
               <i class="fa-solid fa-sliders"></i>
@@ -146,12 +158,12 @@ function ManageBlogs(props) {
                 height="75px"
               ></ReactLoading>
             )}
-            {fetchingBlogs && blogs.length == 0 && (
+            {fetchingBlogs && blogsSearchQuery().length == 0 && (
               <p id="noBlogsPrompt">
                 Oops.... there are no blogs till now.<br></br>Add a blog first.
               </p>
             )}
-            {fetchingBlogs && blogs.length > 0 && (
+            {fetchingBlogs && blogsSearchQuery().length > 0 && (
               <table>
                 <thead>
                   <tr>
@@ -162,8 +174,8 @@ function ManageBlogs(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {blogs.map((val, key) => {
-                    return (
+                  {blogsSearchQuery().map((val, key) => {
+                      return (
                       <tr id="blog" key={key}>
                         <td>{val.blogTitle}</td>
                         <td>{val.blogCategory}</td>
@@ -177,7 +189,8 @@ function ManageBlogs(props) {
                         </td>
                       </tr>
                     );
-                  })}
+                    }
+                  )}
                 </tbody>
               </table>
             )}

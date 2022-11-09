@@ -1,11 +1,5 @@
 import "../css/App.css";
-import {
-  Link,
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { Link, BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Login.js";
 import ResetPassword from "./ResetPassword";
 import {
@@ -55,7 +49,16 @@ function App() {
                 path="reset-password"
                 element={<ResetPassword></ResetPassword>}
               ></Route>
-              <Route path="*" element={<Login></Login>}></Route>
+              <Route
+                path="*"
+                element={
+                  <Login
+                    createSuccessNotification={createSuccessNotification}
+                    createErrorNotification={createErrorNotification}
+                    reRender={reRender}
+                  ></Login>
+                }
+              ></Route>
             </>
           )}
           {sessionStorage.getItem("loggedInUser") && (

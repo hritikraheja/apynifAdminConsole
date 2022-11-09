@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../css/Dashboard.css";
 import ManageBlogs from "./ManageBlogs";
-import apynifSquareLogo from '../assets/apynifSquareLogo.svg';
+import ActiveUsers from "./ActiveUsers";
 import {Link} from 'react-router-dom'
 
 function Dashboard(props) {
@@ -14,7 +14,6 @@ function Dashboard(props) {
 
 
   const dashboardContent = (<p>Dashboard</p>)
-  const activeUsersContent = (<p>Active Users</p>)
   const blockedUsersContent = (<p>Blocked Users</p>)
   const approvedItemsContent = (<p>Approved Items</p>)
   const blockedItemsContent = (<p>Blocked Items</p>)
@@ -27,7 +26,7 @@ function Dashboard(props) {
     if(!param){
       setContent(dashboardContent)
     } else if(param == 'activeUsers'){
-      setContent(activeUsersContent)
+      setContent(<ActiveUsers createSuccessNotification = {props.createSuccessNotification}></ActiveUsers>)
     } else if(param == 'blockedUsers'){
       setContent(blockedUsersContent)
     } else if(param == 'approvedItems'){

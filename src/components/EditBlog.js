@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../css/EditBlog.css";
 import { Link, useLocation } from "react-router-dom";
-import { db, bucket } from "../components/InitializeFirebaseAuth.js";
+import { db, bucket } from "./InitializeFirebaseAuth.js";
 import { ref, onValue, update, remove } from "firebase/database";
 import {
   ref as storageBucketReference,
