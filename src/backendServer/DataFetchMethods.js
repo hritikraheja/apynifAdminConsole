@@ -46,12 +46,12 @@ var nftContractMatic = new matic.eth.Contract(
 var collectionsContractGoerli = new goerli.eth.Contract(
   goerliConfigurations.collectionsContractAbi,
   goerliConfigurations.collectionsContractAddress
-)
+);
 
 var collectionsContractMatic = new matic.eth.Contract(
   maticConfigurations.collectionsContractAbi,
   maticConfigurations.collectionsContractAddress
-)
+);
 
 var marketplaceContractGoerli = new goerli.eth.Contract(
   goerliConfigurations.marketplaceContractAbi,
@@ -64,13 +64,18 @@ var marketplaceContractMatic = new matic.eth.Contract(
 );
 
 async function fetchActiveUsersDetails() {
-  return get(child(dbRef, `users`))
+  var blockedUsers = await marketplaceContractGoerli.methods
+    .getBlockedUsers()
+    .call();
+  let activeUsers = get(child(dbRef, `users`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         let keys = Object.keys(snapshot.val());
         let result = [];
         for (let i = 0; i < keys.length; i++) {
-          result.push({ ...snapshot.val()[keys[i]], userAddress: keys[i] });
+          if (!blockedUsers.includes(keys[i])) {
+            result.push({ ...snapshot.val()[keys[i]], userAddress: keys[i] });
+          }
         }
         return result;
       }
@@ -79,17 +84,30 @@ async function fetchActiveUsersDetails() {
       console.error(error);
       return [];
     });
+  return activeUsers;
 }
 
 async function fetchBlockedUsersDetails() {
   var resultsGoerli = await marketplaceContractGoerli.methods
     .getBlockedUsers()
     .call();
-  var resultsMatic = await marketplaceContractMatic.methods
-    .getBlockedUsers()
-    .call();
-  var results = [...resultsGoerli, ...resultsMatic];
-  return results;
+
+  let blockedUsers = get(child(dbRef, `users`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        let result = [];
+        for (let i = 0; i < resultsGoerli.length; i++) {
+            result.push({...snapshot.val()[resultsGoerli[i]], userAddress : resultsGoerli[i]});
+        }
+        return result;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      return [];
+    });
+
+  return blockedUsers;
 }
 
 async function fetchUserDetailsByAddress(address) {
@@ -126,37 +144,50 @@ async function getAllNftsByOwnerAddress(address) {
   } catch (e) {
     console.log(e);
   }
-  try{
-    var collectionsResultsGoerli = await collectionsContractGoerli.methods.getAllCollections().call()
-    var collectionsResultsMatic = await collectionsContractMatic.methods.getAllCollections().call()
-    collectionsResultsGoerli = collectionsResultsGoerli.filter((obj) => obj.collectionOwnerAddress == address)
-    collectionsResultsMatic = collectionsResultsMatic.filter((obj) => obj.collectionOwnerAddress == address)
-    for(let i = 0; i < collectionsResultsGoerli.length; i++){
+  try {
+    var collectionsResultsGoerli = await collectionsContractGoerli.methods
+      .getAllCollections()
+      .call();
+    var collectionsResultsMatic = await collectionsContractMatic.methods
+      .getAllCollections()
+      .call();
+    collectionsResultsGoerli = collectionsResultsGoerli.filter(
+      (obj) => obj.collectionOwnerAddress == address
+    );
+    collectionsResultsMatic = collectionsResultsMatic.filter(
+      (obj) => obj.collectionOwnerAddress == address
+    );
+    for (let i = 0; i < collectionsResultsGoerli.length; i++) {
       let nftIds = collectionsResultsGoerli[i].nftIds;
-      for(let j = 0; j < nftIds.length; j++){
-        result = [...result, {
-          nftId : parseInt(nftIds[j]),
-          networkId : 5,
-          collectionName : collectionsResultsGoerli[i].collectionName,
-          collectionId : collectionsResultsGoerli[i].collectionId
-        }]
+      for (let j = 0; j < nftIds.length; j++) {
+        result = [
+          ...result,
+          {
+            nftId: parseInt(nftIds[j]),
+            networkId: 5,
+            collectionName: collectionsResultsGoerli[i].collectionName,
+            collectionId: collectionsResultsGoerli[i].collectionId,
+          },
+        ];
       }
     }
 
-    for(let i = 0; i < collectionsResultsMatic.length; i++){
+    for (let i = 0; i < collectionsResultsMatic.length; i++) {
       let nftIds = collectionsResultsGoerli[i].nftIds;
-      for(let j = 0; j < nftIds.length; j++){
-        result = [...result, {
-          nftId : parseInt(nftIds[j]),
-          networkId : 80001,
-          collectionName : collectionsResultsMatic[i].collectionName,
-          collectionId : collectionsResultsMatic[i].collectionId
-        }]
+      for (let j = 0; j < nftIds.length; j++) {
+        result = [
+          ...result,
+          {
+            nftId: parseInt(nftIds[j]),
+            networkId: 80001,
+            collectionName: collectionsResultsMatic[i].collectionName,
+            collectionId: collectionsResultsMatic[i].collectionId,
+          },
+        ];
       }
     }
-
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
   return result;
 }
@@ -228,7 +259,10 @@ async function getNftDetails(nftId, netId) {
     networkName: netName,
     highestBidder: receivedAuctionDetails.highestBidder,
     highestBid:
-      goerli.utils.fromWei(receivedAuctionDetails.highestBid.toString(10), "ether") +
+      goerli.utils.fromWei(
+        receivedAuctionDetails.highestBid.toString(10),
+        "ether"
+      ) +
       " " +
       currency,
     bidEndTimestamp: parseInt(receivedAuctionDetails.bid_end_time),

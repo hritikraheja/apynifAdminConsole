@@ -91,6 +91,19 @@
   margin-right: 10px;
 }
 
+#userDetails #noNftsPrompt{
+  margin: 60px 0px;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: normal;
+  text-align: center;
+  color: #04091e;
+}
+
 #nftsDiv {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import "../css/Dashboard.css";
 import ManageBlogs from "./ManageBlogs";
 import ActiveUsers from "./ActiveUsers";
+import BlockedUsers from "./BlockedUsers";
 import {Link} from 'react-router-dom'
 
 function Dashboard(props) {
@@ -14,7 +15,6 @@ function Dashboard(props) {
 
 
   const dashboardContent = (<p>Dashboard</p>)
-  const blockedUsersContent = (<p>Blocked Users</p>)
   const approvedItemsContent = (<p>Approved Items</p>)
   const blockedItemsContent = (<p>Blocked Items</p>)
   const lostContent = (<div id='lostDiv'>
@@ -28,7 +28,7 @@ function Dashboard(props) {
     } else if(param == 'activeUsers'){
       setContent(<ActiveUsers createSuccessNotification = {props.createSuccessNotification}></ActiveUsers>)
     } else if(param == 'blockedUsers'){
-      setContent(blockedUsersContent)
+      setContent(<BlockedUsers></BlockedUsers>)
     } else if(param == 'approvedItems'){
       setContent(approvedItemsContent)
     } else if(param == 'blockedItems'){

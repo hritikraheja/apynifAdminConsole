@@ -18,7 +18,7 @@ const db = getDatabase(app)
 const auth = getAuth(app)
 const bucket = getStorage(app)
 
-function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
+async function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
   var txnDetails = {
     activity : activity,
     address : userAddress, 
@@ -27,9 +27,7 @@ function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
     dateAndTime : new Date()
   }
 
-  update(ref(db, `adminTransactions/${Date.now()}`), txnDetails).then(() => {
-    window.alert('Updated successfully!');
-  })
+ await update(ref(db, `adminTransactions/${Date.now()}`), txnDetails)
 }
 
 export {auth, db, bucket, writeAdminTxnInDatabase}

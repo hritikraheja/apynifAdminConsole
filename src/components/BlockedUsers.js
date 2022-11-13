@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import "../css/ActiveUsers.css";
+import React from "react";
+import "../css/BlockedUsers.css";
 import { Link, useLocation } from "react-router-dom";
-import defaultProfileImage from "../assets/defaultProfileImage.jpg";
 import ReactLoading from "react-loading";
+import { useState } from "react";
+import defaultProfileImage from "../assets/defaultProfileImage.jpg";
+import { useEffect } from "react";
 import { getContractConfigurations } from "../backendServer/contract-config";
 import { ethers } from "ethers";
 import UserDetails from "./UserDetails.js";
@@ -11,13 +13,13 @@ import transactionProcessingAnimation from "../assets/transactionProcessing.gif"
 import transactionSuccessAnimation from "../assets/transactionSuccess.gif";
 import transactionTerminatedAnimation from "../assets/transactionTerminated.gif";
 
-const ActiveUsers = (props) => {
+function BlockedUsers(props) {
   const [searchBoxQuery, setSearchBoxQuery] = useState("");
   const [userDetails, setUserDetails] = useState(null);
   const [userDetailsFetched, setUserDetailsFetched] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const query = new URLSearchParams(useLocation().search);
   const [txnStatusDialogOpen, setTxnStatusDialogOpen] = useState(false);
+  const query = new URLSearchParams(useLocation().search)
   const [txnState, setTxnState] = useState(0);
   const [txnHashes, setTxnHashes] = useState({
     Goerli: "0x537d5b3d465591d67D2E414B2146C00E8E4C5107",
@@ -26,15 +28,6 @@ const ActiveUsers = (props) => {
   const TRANSACTION_STATE_PROCESSING = 0;
   const TRANSACTION_STATE_TERMINATED = -1;
   const TRANSACTION_STATE_SUCCESS = 1;
-
-  useEffect(() => {
-    fetch("/fetchActiveUsers")
-      .then((res) => res.json())
-      .then((json) => {
-        setUserDetails(json.result);
-        setUserDetailsFetched(true);
-      });
-  }, []);
 
   const resultsAfterSearchQueryAndFilters = () => {
     let result = [];
@@ -68,6 +61,11 @@ const ActiveUsers = (props) => {
     return result;
   };
 
+  const copyTextToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    props.createSuccessNotification("Copied to clipboard!");
+  };
+
   const openDialog = (
     head,
     subhead,
@@ -84,11 +82,6 @@ const ActiveUsers = (props) => {
   const openTxnStateDialog = () => {
     setTxnState(TRANSACTION_STATE_PROCESSING);
     setTxnStatusDialogOpen(true);
-  };
-
-  const copyTextToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    props.createSuccessNotification("Copied to clipboard!");
   };
 
   function getContracts() {
@@ -126,17 +119,15 @@ const ActiveUsers = (props) => {
     };
   }
 
-  const blockUser = async (userAddress) => {
+  const unblockUser = async (userAddress) => {
     setDialogOpen(false);
     openTxnStateDialog();
     const contracts = getContracts();
     try {
-      var goerliTxn = await contracts.marketplaceContractGoerli.blockUser(
-        userAddress
-      );
-      var maticTxn = await contracts.marketplaceContractMatic.blockUser(
-        userAddress
-      );
+      var goerliTxn =
+        await contracts.marketplaceContractGoerli.unblockUser(userAddress);
+      var maticTxn =
+        await contracts.marketplaceContractMatic.unblockUser(userAddress);
       var hashes = {
         goerli: goerliTxn.hash,
         matic: maticTxn.hash,
@@ -153,12 +144,12 @@ const ActiveUsers = (props) => {
     }
     try {
       await writeAdminTxnInDatabase(
-        "User blocked",
+        "User unblock",
         userAddress,
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
-      props.createSuccessNotification("User blocked successfully!");
+      props.createSuccessNotification("User unblocked successfully!");
     } catch (e) {
       console.log(e);
     }
@@ -202,85 +193,91 @@ const ActiveUsers = (props) => {
     }
   };
 
+  useEffect(() => {
+    fetch("/fetchBlockedUsers")
+      .then((obj) => obj.json())
+      .then((json) => {
+        setUserDetails(json.result);
+        setUserDetailsFetched(true);
+      })
+  }, []);
+
   return (
-    <>
-      {!query.get("user") && (
-        <div id="activeUsers">
-          <p id="head">Active Users</p>
-          <p id="subHead">
-            <Link to="/">
-              <span>{"Dashboard"}</span>
-            </Link>
-            {" > "}Active Users
-          </p>
-          <div id="header">
-            <div id="searchBox">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input
-                type="text"
-                defaultValue={searchBoxQuery}
-                placeholder="Search"
-                onChange={(e) => setSearchBoxQuery(e.target.value)}
-              ></input>
-            </div>
-            <p id="filters">
-              <i class="fa-solid fa-sliders"></i>
-            </p>
+    <div>
+      <div id="blockedUsers">
+        <p id="head">Blocked Users</p>
+        <p id="subHead">
+          <Link to="/">
+            <span>{"Dashboard"}</span>
+          </Link>
+          {" > "}Blocked Users
+        </p>
+        <div id="header">
+          <div id="searchBox">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              defaultValue={searchBoxQuery}
+              placeholder="Search"
+              onChange={(e) => setSearchBoxQuery(e.target.value)}
+            ></input>
           </div>
-          <div id="activeUsersContent">
-            {!userDetailsFetched && (
-              <ReactLoading
-                className="loadingAnimation"
-                type="spinningBubbles"
-                color="red"
-                width="75px"
-                height="75px"
-              ></ReactLoading>
+          <p id="filters">
+            <i class="fa-solid fa-sliders"></i>
+          </p>
+        </div>
+        <div id="blockedUsersContent">
+          {!userDetailsFetched && (
+            <ReactLoading
+              className="loadingAnimation"
+              type="spinningBubbles"
+              color="red"
+              width="75px"
+              height="75px"
+            ></ReactLoading>
+          )}
+          {userDetailsFetched &&
+            resultsAfterSearchQueryAndFilters().length == 0 && (
+              <p id="noBlogsPrompt">Oops.... there are no users to display.</p>
             )}
-            {userDetailsFetched &&
-              resultsAfterSearchQueryAndFilters().length == 0 && (
-                <p id="noBlogsPrompt">
-                  Oops.... there are no users to display.
-                </p>
-              )}
-            {userDetails && resultsAfterSearchQueryAndFilters().length > 0 && (
-              <table>
-                <thead>
-                  <tr>
-                    <th>Profile Picture</th>
-                    <th>Full Name</th>
-                    <th>Username</th>
-                    <th>Wallet Address</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {resultsAfterSearchQueryAndFilters().map((val, key) => {
-                    return (
-                      <tr id="user" key={key}>
-                        <td id="profilePictureCol">
-                          <img
-                            onClick={() => {
-                              window.location =
-                                "/activeUsers?user=" + val.userAddress;
-                            }}
-                            src={
-                              val.profileImageSrc && val.profileImageSrc != ""
-                                ? val.profileImageSrc
-                                : defaultProfileImage
-                            }
-                          ></img>
-                        </td>
-                        <td>
-                          {val.firstName || val.lastName
-                            ? val.firstName + " " + val.lastName
-                            : "------"}
-                        </td>
-                        <td>{val.userName ? val.userName : "------"}</td>
-                        <td>{val.userAddress}</td>
-                        <td id="buttonsCol">
-                          <button
-                            id="removeButton"
+          {userDetails && resultsAfterSearchQueryAndFilters().length > 0 && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Profile Picture</th>
+                  <th>Full Name</th>
+                  <th>Username</th>
+                  <th>Wallet Address</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {resultsAfterSearchQueryAndFilters().map((val, key) => {
+                  return (
+                    <tr id="user" key={key}>
+                      <td id="profilePictureCol">
+                        <img
+                          onClick={() => {
+                            window.location =
+                              "/blockedUsers?user=" + val.userAddress;
+                          }}
+                          src={
+                            val.profileImageSrc && val.profileImageSrc != ""
+                              ? val.profileImageSrc
+                              : defaultProfileImage
+                          }
+                        ></img>
+                      </td>
+                      <td>
+                        {val.firstName || val.lastName
+                          ? val.firstName + " " + val.lastName
+                          : "------"}
+                      </td>
+                      <td>{val.userName ? val.userName : "------"}</td>
+                      <td>{val.userAddress}</td>
+                      <td id="buttonsCol">
+                        {/* <button
+                          id="removeButton"
                             onClick={() => {
                               openDialog(
                                 "Remove User!",
@@ -289,33 +286,31 @@ const ActiveUsers = (props) => {
                                 () => removeUser(val.userAddress)
                               );
                             }}
-                          >
-                            <i className="fa-solid fa-trash-can"></i>
-                          </button>
-                          <button
-                            id="blockButton"
+                        >
+                          <i className="fa-solid fa-trash-can"></i>
+                        </button> */}
+                        <button
+                          id="unblockButton"
                             onClick={() => {
                               openDialog(
-                                "Block User!",
-                                "Are you sure, you want to block this user?",
+                                "Unblock User!",
+                                "Are you sure, you want to unblock this user?",
                                 () => setDialogOpen(false),
-                                () => blockUser(val.userAddress)
+                                () => unblockUser(val.userAddress)
                               );
                             }}
-                          >
-                            <i className="fa-solid fa-ban"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            )}
-          </div>
+                        >
+                          <i class="fas fa-user-check"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
         </div>
-      )}
-      {query.get("user") && <UserDetails></UserDetails>}
+      </div>
       <div
         id="dialogDiv"
         style={{
@@ -324,7 +319,7 @@ const ActiveUsers = (props) => {
       >
         <dialog open={dialogOpen} id="dialog">
           <p id="dialogHead">Block User!</p>
-          <p id="dialogSubhead">Are you sure, you want to block this user?</p>
+          <p id="dialogSubhead">Are you sure, you want to unblock this user?</p>
           <div id="dialogButtonsDiv">
             <button id="noButton">No</button>
             <button id="yesButton">Yes</button>
@@ -383,8 +378,8 @@ const ActiveUsers = (props) => {
           </button>
         </dialog>
       </div>
-    </>
+    </div>
   );
-};
+}
 
-export default ActiveUsers;
+export default BlockedUsers;
