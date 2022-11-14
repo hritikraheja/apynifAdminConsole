@@ -82,7 +82,7 @@ function Login(props) {
                   setShowPassword(!showPassword)
                 }}></i>
               </div>
-              {invalidPassword && <p id="invalidInput">Your password was incorrect</p>}
+              {invalidPassword && <p id="invalidInput">Password is incorrect</p>}
             </div>
             <Link to={'/forgot-password'}><button type="button" id="forgotPasswordButton">Forgot Password?</button></Link>
             <button type="submit" id="signInButton" disabled = {signingIn}>{signingIn && <ReactLoading className="loadingAnimation" type='spinningBubbles' color="white" width='25px' height='25px'></ReactLoading>}<p>{signingIn ? 'Signing In' : 'Sign In'}</p></button>

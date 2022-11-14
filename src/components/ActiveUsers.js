@@ -243,7 +243,7 @@ const ActiveUsers = (props) => {
                   Oops.... there are no users to display.
                 </p>
               )}
-            {userDetails && resultsAfterSearchQueryAndFilters().length > 0 && (
+            {userDetailsFetched && resultsAfterSearchQueryAndFilters().length > 0 && (
               <table>
                 <thead>
                   <tr>

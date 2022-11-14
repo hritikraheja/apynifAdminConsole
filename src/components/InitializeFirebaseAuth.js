@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
-import { getDatabase, ref, update } from 'firebase/database'
+import { getDatabase, ref, update, remove } from 'firebase/database'
 import { getStorage} from 'firebase/storage'
 
 const firebaseConfig = {
@@ -30,4 +30,12 @@ async function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
  await update(ref(db, `adminTransactions/${Date.now()}`), txnDetails)
 }
 
-export {auth, db, bucket, writeAdminTxnInDatabase}
+async function writeRemovedItemInDatabase(itemDetails){
+  await update(ref(db, `removedItems/${Date.now()}`), itemDetails)
+}
+
+async function deleteRemovedItemFromDatabase(key){
+  await remove(ref(db, `removedItems/${key}`))
+}
+
+export {auth, db, bucket, writeAdminTxnInDatabase, writeRemovedItemInDatabase, deleteRemovedItemFromDatabase}

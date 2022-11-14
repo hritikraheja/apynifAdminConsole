@@ -1,0 +1,77 @@
+#removedItems {
+  width: 90%;
+  margin: 40px 5%;
+}
+
+#removedItemsContent,
+#removedItemsContent table {
+  width: 100%;
+  margin-top: 40px;
+  border-collapse: separate;
+  border-spacing: 0 15px;
+}
+
+#removedItemsContent table th {
+  background-color: #f4f8f7;
+  font-family: "Urbanist", sans-serif;
+  text-align: left;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+#removedItemsContent #item {
+  outline: 1px solid #d1daeb;
+  border-radius: 6px;
+  height: 60px;
+}
+
+#removedItemsContent #item:hover {
+  border: none;
+  background-color: #d5e4e0;
+}
+
+#removedItemsContent table td {
+  padding: 5px;
+  text-align: left;
+  font-family: "Urbanist", sans-serif;
+  font-size: 13px;
+  border: none;
+  font-weight: 500;
+}
+
+#removedItemsContent table #itemCoverImageCol {
+  display: block;
+  width: 60px;
+}
+
+#removedItemsContent table #itemCoverImageCol img {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0px auto;
+  cursor: pointer;
+}
+
+#removedItemsContent table #profilePictureCol img:hover {
+  transform: scale(1.1);
+}
+
+#removedItemsContent table #buttonsCol button {
+  display: block;
+  font-family: "Urbanist", sans-serif;
+  color: white;
+  border: none;
+  outline: none;
+  background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+  padding: 4px 8px;
+  font-size: 15px;
+  font-weight: bolder;
+  margin: auto;
+  justify-content: center;
+}
+
+#removedItemsContent table #buttonsCol button:hover {
+  transform: scale(1.2);
+}

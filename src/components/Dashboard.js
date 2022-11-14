@@ -4,6 +4,8 @@ import "../css/Dashboard.css";
 import ManageBlogs from "./ManageBlogs";
 import ActiveUsers from "./ActiveUsers";
 import BlockedUsers from "./BlockedUsers";
+import ApprovedItems from "./ApprovedItems";
+import RemovedItems from "./RemovedItems";
 import {Link} from 'react-router-dom'
 
 function Dashboard(props) {
@@ -28,11 +30,11 @@ function Dashboard(props) {
     } else if(param == 'activeUsers'){
       setContent(<ActiveUsers createSuccessNotification = {props.createSuccessNotification}></ActiveUsers>)
     } else if(param == 'blockedUsers'){
-      setContent(<BlockedUsers></BlockedUsers>)
+      setContent(<BlockedUsers createSuccessNotification = {props.createSuccessNotification}></BlockedUsers>)
     } else if(param == 'approvedItems'){
-      setContent(approvedItemsContent)
-    } else if(param == 'blockedItems'){
-      setContent(blockedItemsContent)
+      setContent(<ApprovedItems createSuccessNotification = {props.createSuccessNotification}></ApprovedItems>)
+    } else if(param == 'removedItems'){
+      setContent(<RemovedItems createSuccessNotification = {props.createSuccessNotification}></RemovedItems>)
     } else if(param == 'manageBlogs' || param == 'manageBlogs-addBlog'){
       setContent(<ManageBlogs createSuccessNotification = {props.createSuccessNotification} createErrorNotification = {props.createErrorNotification}></ManageBlogs>)
     } else {
@@ -189,7 +191,7 @@ function Dashboard(props) {
                 }}
               ></i>
             )}
-            {(param == 'approvedItems' || param == 'blockedItems') && (
+            {(param == 'approvedItems' || param == 'removedItems') && (
               <p id={sideNavOpen ? "greenDotActive" : "greenDotNotActive"}></p>
             )}
             {sideNavOpen && (
@@ -243,11 +245,11 @@ function Dashboard(props) {
               </Link>
             </li>
             <li>
-              <Link to='/blockedItems'>
+              <Link to='/removedItems'>
               <div
                 id="sideMenuItem"
                 className={
-                  (param == 'blockedItems' ? "activeItem" : "notActiveItem") +
+                  (param == 'removedItems' ? "activeItem" : "notActiveItem") +
                   " pointer"
                 }
               >
@@ -261,7 +263,7 @@ function Dashboard(props) {
                 ></i>
                 {sideNavOpen && (
                   <div id="sideMenuItemText">
-                    <p>Blocked</p>
+                    <p>Removed</p>
                   </div>
                 )}
               </div>

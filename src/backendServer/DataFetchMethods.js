@@ -63,6 +63,59 @@ var marketplaceContractMatic = new matic.eth.Contract(
   maticConfigurations.marketplaceContractAddress
 );
 
+
+async function getAllNfts(){
+  var results = []
+  try{
+    var singleItemsGoerli = await nftContractGoerli.methods.getListedSingleNftIds().call()
+    singleItemsGoerli.forEach(id => {
+      results.push({nftId : id, netId : 5})
+    })
+  } catch (e){
+    console.log(e)
+  }
+  try{
+    var singleItemsMatic = await nftContractMatic.methods.getListedSingleNftIds().call()
+    singleItemsMatic.forEach(id => {
+      results.push({nftId : id, netId : 80001})
+    })
+  } catch (e){
+    console.log(e)
+  }
+  try{
+    let collectionGoerli = await collectionsContractGoerli.methods.getAllCollections().call()
+    collectionGoerli.forEach(col => {
+      col.nftIds.forEach(id => {
+        results.push({
+          nftId : id,
+          netId : 5,
+          collectionId : col.collectionId,
+          collectionName : col.collectionName
+        })
+      })
+    })
+  } catch(err) {
+    console.log(err)
+  }
+
+  try{
+    let collectionMatic = await collectionsContractMatic.methods.getAllCollections().call()
+    collectionMatic.forEach(col => {
+      col.nftIds.forEach(id => {
+        results.push({
+          nftId : id,
+          netId : 80001,
+          collectionId : col.collectionId,
+          collectionName : col.collectionName
+        })
+      })
+    })
+  } catch(err) {
+    console.log(err)
+  }
+  return results
+}
+
 async function fetchActiveUsersDetails() {
   var blockedUsers = await marketplaceContractGoerli.methods
     .getBlockedUsers()
@@ -123,6 +176,22 @@ async function fetchUserDetailsByAddress(address) {
     });
 }
 
+async function getRemovedItems(){
+  let result = []
+  await get(child(dbRef, 'removedItems'))
+  .then((snapshot) => {
+    if(snapshot.exists()){
+      snapshot.forEach(childSnap => {
+        result.push({...childSnap.val(), key : childSnap.key})
+      })
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+  return result;
+}
+
 async function getAllNftsByOwnerAddress(address) {
   result = [];
   try {
@@ -173,7 +242,7 @@ async function getAllNftsByOwnerAddress(address) {
     }
 
     for (let i = 0; i < collectionsResultsMatic.length; i++) {
-      let nftIds = collectionsResultsGoerli[i].nftIds;
+      let nftIds = collectionsResultsMatic[i].nftIds;
       for (let j = 0; j < nftIds.length; j++) {
         result = [
           ...result,
@@ -271,10 +340,20 @@ async function getNftDetails(nftId, netId) {
   return nftDetails;
 }
 
+async function checkUserBlocked(user){
+  var result = await marketplaceContractGoerli.methods
+    .getBlockedUsers()
+    .call();
+    return result.includes(user)
+}
+
 module.exports = {
   fetchActiveUsersDetails,
   fetchBlockedUsersDetails,
   getAllNftsByOwnerAddress,
   fetchUserDetailsByAddress,
   getNftDetails,
+  getAllNfts,
+  getRemovedItems,
+  checkUserBlocked,
 };

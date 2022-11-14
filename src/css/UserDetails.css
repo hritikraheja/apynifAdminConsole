@@ -2,6 +2,31 @@
   width: 90%;
   margin: 40px 5%;
   padding-bottom: 100px;
+  position: relative;
+}
+
+#userDetailsButtonsDiv{
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  display: flex;
+}
+
+#userDetailsButtonsDiv button{
+  display: block;
+  font-family: "Urbanist", sans-serif;
+  color: white;
+  border: none;
+  outline: none;
+  background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+  padding: 8px 12px;
+  font-size: 18px;
+  margin: 5px;
+  justify-content: center;
+}
+
+#userDetailsButtonsDiv button:hover{
+  transform: scale(1.15);
 }
 
 #userDetails #userDetailsHead {
@@ -186,6 +211,7 @@
   height: 50px;
   border: none;
   background: none;
+  outline : none;
   padding: 6px 0px;
   font-weight: 600;
   background: linear-gradient(106deg, #fcad02 -36%, #ff0041 98%);
