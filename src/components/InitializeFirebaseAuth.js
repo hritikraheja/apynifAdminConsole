@@ -18,10 +18,11 @@ const db = getDatabase(app)
 const auth = getAuth(app)
 const bucket = getStorage(app)
 
-async function writeAdminTxnInDatabase(activity, userAddress, txnHashes, admin){
+async function writeAdminTxnInDatabase(activity, userAddress, itemId, txnHashes, admin){
   var txnDetails = {
     activity : activity,
-    address : userAddress, 
+    address : userAddress,
+    itemId : itemId,
     txnHashes : txnHashes,
     admin : admin,
     dateAndTime : new Date()

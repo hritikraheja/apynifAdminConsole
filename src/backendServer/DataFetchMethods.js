@@ -5,6 +5,9 @@ const Web3 = require("web3");
 var fetch = require("node-fetch");
 require("dotenv").config();
 
+/**
+ * The firebase project configuration.
+ */
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_CONFIG_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_CONFIG_AUTH_DOMAIN,
@@ -14,6 +17,10 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_CONFIG_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_CONFIG_APP_ID,
 };
+
+/**
+ * This file contains controller methods for all the routes specified in the server.js
+ */
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -33,6 +40,9 @@ var matic = new Web3(
 var goerliConfigurations = getContractConfigurations("5");
 var maticConfigurations = getContractConfigurations("80001");
 
+/**
+ * Contract instances of various deployed contracts on the specified networks.
+ */
 var nftContractGoerli = new goerli.eth.Contract(
   goerliConfigurations.nftContractAbi,
   goerliConfigurations.nftContractAddress
@@ -63,59 +73,75 @@ var marketplaceContractMatic = new matic.eth.Contract(
   maticConfigurations.marketplaceContractAddress
 );
 
-
-async function getAllNfts(){
-  var results = []
-  try{
-    var singleItemsGoerli = await nftContractGoerli.methods.getListedSingleNftIds().call()
-    singleItemsGoerli.forEach(id => {
-      results.push({nftId : id, netId : 5})
-    })
-  } catch (e){
-    console.log(e)
+/**
+ * This method provides the nftId and netId of all the nfts that are listed to the marketplace,
+ * whether they are single items or collections.
+ * @returns An array of items with their respective nftIds and networkIds.
+ */
+async function getAllNfts() {
+  var results = [];
+  try {
+    var singleItemsGoerli = await nftContractGoerli.methods
+      .getListedSingleNftIds()
+      .call();
+    singleItemsGoerli.forEach((id) => {
+      results.push({ nftId: id, netId: 5 });
+    });
+  } catch (e) {
+    console.log(e);
   }
-  try{
-    var singleItemsMatic = await nftContractMatic.methods.getListedSingleNftIds().call()
-    singleItemsMatic.forEach(id => {
-      results.push({nftId : id, netId : 80001})
-    })
-  } catch (e){
-    console.log(e)
+  try {
+    var singleItemsMatic = await nftContractMatic.methods
+      .getListedSingleNftIds()
+      .call();
+    singleItemsMatic.forEach((id) => {
+      results.push({ nftId: id, netId: 80001 });
+    });
+  } catch (e) {
+    console.log(e);
   }
-  try{
-    let collectionGoerli = await collectionsContractGoerli.methods.getAllCollections().call()
-    collectionGoerli.forEach(col => {
-      col.nftIds.forEach(id => {
+  try {
+    let collectionGoerli = await collectionsContractGoerli.methods
+      .getAllCollections()
+      .call();
+    collectionGoerli.forEach((col) => {
+      col.nftIds.forEach((id) => {
         results.push({
-          nftId : id,
-          netId : 5,
-          collectionId : col.collectionId,
-          collectionName : col.collectionName
-        })
-      })
-    })
-  } catch(err) {
-    console.log(err)
+          nftId: id,
+          netId: 5,
+          collectionId: col.collectionId,
+          collectionName: col.collectionName,
+        });
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
 
-  try{
-    let collectionMatic = await collectionsContractMatic.methods.getAllCollections().call()
-    collectionMatic.forEach(col => {
-      col.nftIds.forEach(id => {
+  try {
+    let collectionMatic = await collectionsContractMatic.methods
+      .getAllCollections()
+      .call();
+    collectionMatic.forEach((col) => {
+      col.nftIds.forEach((id) => {
         results.push({
-          nftId : id,
-          netId : 80001,
-          collectionId : col.collectionId,
-          collectionName : col.collectionName
-        })
-      })
-    })
-  } catch(err) {
-    console.log(err)
+          nftId: id,
+          netId: 80001,
+          collectionId: col.collectionId,
+          collectionName: col.collectionName,
+        });
+      });
+    });
+  } catch (err) {
+    console.log(err);
   }
-  return results
+  return results;
 }
 
+/**
+ * This method returns the details of all the active users.
+ * @returns An array of details of all active users.
+ */
 async function fetchActiveUsersDetails() {
   var blockedUsers = await marketplaceContractGoerli.methods
     .getBlockedUsers()
@@ -140,6 +166,10 @@ async function fetchActiveUsersDetails() {
   return activeUsers;
 }
 
+/**
+ * This method returns the details of all the blocked users.
+ * @returns An array of details of all the blocked users.
+ */
 async function fetchBlockedUsersDetails() {
   var resultsGoerli = await marketplaceContractGoerli.methods
     .getBlockedUsers()
@@ -150,7 +180,10 @@ async function fetchBlockedUsersDetails() {
       if (snapshot.exists()) {
         let result = [];
         for (let i = 0; i < resultsGoerli.length; i++) {
-            result.push({...snapshot.val()[resultsGoerli[i]], userAddress : resultsGoerli[i]});
+          result.push({
+            ...snapshot.val()[resultsGoerli[i]],
+            userAddress: resultsGoerli[i],
+          });
         }
         return result;
       }
@@ -163,6 +196,11 @@ async function fetchBlockedUsersDetails() {
   return blockedUsers;
 }
 
+/**
+ * This method returns the details of the user by their respective wallet address.
+ * @param address - The address of the user whose details are to be fetched.
+ * @returns The details of the user.
+ */
 async function fetchUserDetailsByAddress(address) {
   return get(child(dbRef, `users/` + address))
     .then((snapshot) => {
@@ -176,22 +214,31 @@ async function fetchUserDetailsByAddress(address) {
     });
 }
 
-async function getRemovedItems(){
-  let result = []
-  await get(child(dbRef, 'removedItems'))
-  .then((snapshot) => {
-    if(snapshot.exists()){
-      snapshot.forEach(childSnap => {
-        result.push({...childSnap.val(), key : childSnap.key})
-      })
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+/**
+ * This method returns the details of all the items that are removed from the marketplace.
+ * @returns An array of details of all the items that are removed from the marketplace.
+ */
+async function getRemovedItems() {
+  let result = [];
+  await get(child(dbRef, "removedItems"))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnap) => {
+          result.push({ ...childSnap.val(), key: childSnap.key });
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   return result;
 }
 
+/**
+ * This method returns the details of nfts owned by a user by their respective address.
+ * @param address - The address of the user whose nft details are to be fetched. 
+ * @returns An array of details of all the items owned by the user with the provided wallet address.
+ */
 async function getAllNftsByOwnerAddress(address) {
   result = [];
   try {
@@ -261,6 +308,12 @@ async function getAllNftsByOwnerAddress(address) {
   return result;
 }
 
+/**
+ * This method returns the details of the provided nftId on the specified network.
+ * @param nftId - The id of the nft whose details are to be fetched.
+ * @param netId - The network on which the nft is created.
+ * @returns The details of the item.
+ */
 async function getNftDetails(nftId, netId) {
   let nftContract;
   let marketplaceContract;
@@ -340,11 +393,62 @@ async function getNftDetails(nftId, netId) {
   return nftDetails;
 }
 
-async function checkUserBlocked(user){
-  var result = await marketplaceContractGoerli.methods
-    .getBlockedUsers()
-    .call();
-    return result.includes(user)
+/**
+ * This method checks whether the provided address is blocked or not.
+ * @param user - The user address to be checked.
+ * @returns A boolean value representing whether the user is blocked.
+ */
+async function checkUserBlocked(user) {
+  var result = await marketplaceContractGoerli.methods.getBlockedUsers().call();
+  return result.includes(user);
+}
+
+/**
+ * This method returns all the admin transactions to be displayed on the dashboard.
+ * @returns An array of details of all the admin transactions.
+ */
+async function getAdminTransactions() {
+  let adminTransactions = get(child(dbRef, `adminTransactions`)).then(
+    (snapshot) => {
+      if (snapshot.exists()) {
+        let keys = Object.keys(snapshot.val());
+        let result = [];
+        for (let i = 0; i < keys.length; i++) {
+          var txn = snapshot.val()[keys[i]]
+          // let hashKeys = Object.keys(txn.txnHashes)
+          // let hashes = []
+          // for(let j = 0; j < hashKeys.length; j++){
+          //   hashes.push(JSON.parse(`{"${hashKeys[j]}":"${txn.txnHashes[hashKeys[j]]}"}`))
+          // }
+          // txn.txnHashes = hashes;
+          result.push({...snapshot.val()[keys[i]], key : keys[i]})
+        }
+        return result;
+      }
+    }
+  ).catch((error) => {
+    console.error(error);
+    return [];
+  });
+  return adminTransactions;
+}
+
+async function getDashboardStats(){
+  let usersCount = await get(child(dbRef, `users`))
+  .then((snapshot)=> {
+    if(snapshot.exists()){
+      let keys = Object.keys(snapshot.val())
+      return keys.length;
+    } else {
+      return 0;
+    }
+  }).catch((err) => {
+    console.log(err)
+    return 0;
+  })
+
+  let listedItems = await getAllNfts()
+  return { usersCount : usersCount, itemsCount : listedItems.length }
 }
 
 module.exports = {
@@ -356,4 +460,6 @@ module.exports = {
   getAllNfts,
   getRemovedItems,
   checkUserBlocked,
+  getAdminTransactions,
+  getDashboardStats,
 };

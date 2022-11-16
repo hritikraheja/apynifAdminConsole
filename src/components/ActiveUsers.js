@@ -27,6 +27,9 @@ const ActiveUsers = (props) => {
   const TRANSACTION_STATE_TERMINATED = -1;
   const TRANSACTION_STATE_SUCCESS = 1;
 
+  /**
+   * This hook fetches the details of all the active users.
+   */
   useEffect(() => {
     fetch("/fetchActiveUsers")
       .then((res) => res.json())
@@ -34,8 +37,13 @@ const ActiveUsers = (props) => {
         setUserDetails(json.result);
         setUserDetailsFetched(true);
       });
+      props.resetTimeCount()
   }, []);
 
+  /**
+   * This method filters the users based on the search query.
+   * @returns An array of details of the filtered users.
+   */
   const resultsAfterSearchQueryAndFilters = () => {
     let result = [];
     userDetails.map((val, key) => {
@@ -67,7 +75,14 @@ const ActiveUsers = (props) => {
     });
     return result;
   };
-
+  
+  /**
+   * This method opens up the yes/no dialog for the task to be performed.
+   * @param head - The head of the dialog to be displayed.
+   * @param subhead - The subhead statement of the dialog to be displayed.
+   * @param noButtonOnClickHandler - The method to be called when user clicks the NO button.
+   * @param yesButtonOnClickHandler - The method to be called when user clicks the YES button.
+   */
   const openDialog = (
     head,
     subhead,
@@ -81,16 +96,27 @@ const ActiveUsers = (props) => {
     setDialogOpen(true);
   };
 
+  /**
+   * This methods opens up the transaction state dialog that denotes the state of the transaction.
+   */
   const openTxnStateDialog = () => {
     setTxnState(TRANSACTION_STATE_PROCESSING);
     setTxnStatusDialogOpen(true);
   };
 
+  /**
+   * This method copies the provided text to the clipboard.
+   * @param text - The text to be copied on the clipboard.
+   */
   const copyTextToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     props.createSuccessNotification("Copied to clipboard!");
   };
 
+  /**
+   * This method provides the contract instances of all the contracts on all the supported networks.
+   * @returns The instances of all contracts for method calls.
+   */
   function getContracts() {
     var goerliWallet = new ethers.Wallet(
       process.env.REACT_APP_WALLET_ACCOUNT_PRIVATE_KEY,
@@ -126,6 +152,10 @@ const ActiveUsers = (props) => {
     };
   }
 
+  /**
+   * This method blocks the user on the chains and writes admin transaction history on the database.
+   * @param userAddress The address of the user to be blocked.
+   */
   const blockUser = async (userAddress) => {
     setDialogOpen(false);
     openTxnStateDialog();
@@ -155,6 +185,7 @@ const ActiveUsers = (props) => {
       await writeAdminTxnInDatabase(
         "User blocked",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -164,6 +195,10 @@ const ActiveUsers = (props) => {
     }
   };
 
+  /**
+   * This method removes the user from the marketplace on the chains and writes admin transaction history on the database.
+   * @param userAddress The address of the user to be removed.
+   */
   const removeUser = async (userAddress) => {
     setDialogOpen(false);
     openTxnStateDialog();
@@ -193,6 +228,7 @@ const ActiveUsers = (props) => {
       await writeAdminTxnInDatabase(
         "User removed",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );

@@ -219,7 +219,8 @@ function UserDetails(props) {
     try {
       await writeAdminTxnInDatabase(
         "Item Removed",
-        `Item id : ${nftId} on ${netId == "5" ? "Goerli" : "Matic"}`,
+        itemDetails.seller,
+        nftId,
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -259,6 +260,7 @@ function UserDetails(props) {
       await writeAdminTxnInDatabase(
         "User blocked",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -297,6 +299,7 @@ function UserDetails(props) {
       await writeAdminTxnInDatabase(
         "User unblock",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -335,6 +338,7 @@ function UserDetails(props) {
       await writeAdminTxnInDatabase(
         "User removed",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );

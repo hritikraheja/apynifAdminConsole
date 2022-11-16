@@ -7,7 +7,6 @@ import defaultProfileImage from "../assets/defaultProfileImage.jpg";
 import { useEffect } from "react";
 import { getContractConfigurations } from "../backendServer/contract-config";
 import { ethers } from "ethers";
-import UserDetails from "./UserDetails.js";
 import { writeAdminTxnInDatabase } from "./InitializeFirebaseAuth.js";
 import transactionProcessingAnimation from "../assets/transactionProcessing.gif";
 import transactionSuccessAnimation from "../assets/transactionSuccess.gif";
@@ -29,6 +28,10 @@ function BlockedUsers(props) {
   const TRANSACTION_STATE_TERMINATED = -1;
   const TRANSACTION_STATE_SUCCESS = 1;
 
+  /**
+   * This method filters the users based on the search query.
+   * @returns An array of details of the filtered users.
+   */
   const resultsAfterSearchQueryAndFilters = () => {
     let result = [];
     userDetails.map((val, key) => {
@@ -61,11 +64,22 @@ function BlockedUsers(props) {
     return result;
   };
 
+  /**
+   * This method copies the provided text to the clipboard.
+   * @param text - The text to be copied on the clipboard.
+   */
   const copyTextToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     props.createSuccessNotification("Copied to clipboard!");
   };
 
+  /**
+   * This method opens up the yes/no dialog for the task to be performed.
+   * @param head - The head of the dialog to be displayed.
+   * @param subhead - The subhead statement of the dialog to be displayed.
+   * @param noButtonOnClickHandler - The method to be called when user clicks the NO button.
+   * @param yesButtonOnClickHandler - The method to be called when user clicks the YES button.
+   */
   const openDialog = (
     head,
     subhead,
@@ -79,11 +93,18 @@ function BlockedUsers(props) {
     setDialogOpen(true);
   };
 
+  /**
+   * This methods opens up the transaction state dialog that denotes the state of the transaction.
+   */
   const openTxnStateDialog = () => {
     setTxnState(TRANSACTION_STATE_PROCESSING);
     setTxnStatusDialogOpen(true);
   };
 
+  /**
+   * This method provides the contract instances of all the contracts on all the supported networks.
+   * @returns The instances of all contracts for method calls.
+   */
   function getContracts() {
     var goerliWallet = new ethers.Wallet(
       process.env.REACT_APP_WALLET_ACCOUNT_PRIVATE_KEY,
@@ -119,6 +140,10 @@ function BlockedUsers(props) {
     };
   }
 
+  /**
+   * This method unblocks the user on the chains and writes admin transaction history on the database.
+   * @param userAddress The address of the user to be unblocked.
+   */
   const unblockUser = async (userAddress) => {
     setDialogOpen(false);
     openTxnStateDialog();
@@ -146,6 +171,7 @@ function BlockedUsers(props) {
       await writeAdminTxnInDatabase(
         "User unblock",
         userAddress,
+        '------',
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -155,6 +181,9 @@ function BlockedUsers(props) {
     }
   };
 
+  /**
+   * This hook fetches the details of all the blocked users.
+   */
   useEffect(() => {
     fetch("/fetchBlockedUsers")
       .then((obj) => obj.json())
@@ -162,6 +191,7 @@ function BlockedUsers(props) {
         setUserDetails(json.result);
         setUserDetailsFetched(true);
       })
+      props.resetTimeCount()
   }, []);
 
   return (

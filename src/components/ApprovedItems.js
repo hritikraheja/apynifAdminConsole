@@ -26,6 +26,10 @@ const ApprovedItems = (props) => {
   const TRANSACTION_STATE_TERMINATED = -1;
   const TRANSACTION_STATE_SUCCESS = 1;
 
+  /**
+   * This method filters the users based on the search query.
+   * @returns An array of details of the filtered users.
+   */
   const resultsAfterSearchQueryAndFilters = () => {
     let result = [];
     // items.map((val, key) => {
@@ -58,6 +62,10 @@ const ApprovedItems = (props) => {
     return items;
   };
 
+  /**
+   * This method provides the contract instances of all the contracts on all the supported networks.
+   * @returns The instances of all contracts for method calls.
+   */
   function getContracts() {
     var goerliWallet = new ethers.Wallet(
       process.env.REACT_APP_WALLET_ACCOUNT_PRIVATE_KEY,
@@ -105,6 +113,9 @@ const ApprovedItems = (props) => {
     };
   }
 
+  /**
+   * This hook fetches the details of all the approved items.
+   */
   useEffect(() => {
     fetch("/getAllListedItemIds")
       .then((res) => res.json())
@@ -131,18 +142,32 @@ const ApprovedItems = (props) => {
           }
         );
       });
+      props.resetTimeCount()
   }, []);
 
+   /**
+   * This method copies the provided text to the clipboard.
+   * @param text - The text to be copied on the clipboard.
+   */
   const copyTextToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     props.createSuccessNotification("Copied to clipboard!");
   };
 
+  /**
+   * This methods opens up the transaction state dialog that denotes the state of the transaction.
+   */
   const openTxnStateDialog = () => {
     setTxnState(TRANSACTION_STATE_PROCESSING);
     setTxnStatusDialogOpen(true);
   };
-
+  /**
+   * This method opens up the yes/no dialog for the task to be performed.
+   * @param head - The head of the dialog to be displayed.
+   * @param subhead - The subhead statement of the dialog to be displayed.
+   * @param noButtonOnClickHandler - The method to be called when user clicks the NO button.
+   * @param yesButtonOnClickHandler - The method to be called when user clicks the YES button.
+   */
   const openDialog = (
     head,
     subhead,
@@ -156,6 +181,12 @@ const ApprovedItems = (props) => {
     setDialogOpen(true);
   };
 
+  /**
+   * This method removes the item from the marketplace and writes admin transaction history on the database.
+   * @param nftId The id of the nft to be removed.
+   * @param netId The id of the network on which the item is minted.
+   * @param itemDetails The details of the item which is to be removed.
+   */
   const removeItem = async (nftId, netId, itemDetails) => {
     setDialogOpen(false);
     openTxnStateDialog();
@@ -194,7 +225,8 @@ const ApprovedItems = (props) => {
     try {
       await writeAdminTxnInDatabase(
         "Item Removed",
-        `Item id : ${nftId} on ${netId == '5'? 'Goerli' : 'Matic'}`,
+        itemDetails.sender,
+        nftId,
         hashes,
         sessionStorage.getItem("loggedInUser")
       );
@@ -205,6 +237,12 @@ const ApprovedItems = (props) => {
     }
   };
 
+  /**
+   * This method unlists an nft from the marketplace and writes the admin transaction history on the database.
+   * @param nftId The id of the nft.
+   * @param netId The id of the network.
+   * @param sender The seller of the Nft.
+   */
   const unlistItem = async (nftId, netId, sender) => {
     setDialogOpen(false);
     openTxnStateDialog();
@@ -243,7 +281,8 @@ const ApprovedItems = (props) => {
     try {
       await writeAdminTxnInDatabase(
         "Item Unlisted",
-        `Item id : ${nftId} on ${netId == '5'? 'Goerli' : 'Matic'}`,
+        sender,
+        nftId,
         hashes,
         sessionStorage.getItem("loggedInUser")
       );

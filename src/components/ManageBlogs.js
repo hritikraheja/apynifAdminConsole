@@ -35,6 +35,7 @@ function ManageBlogs(props) {
               console.log("Data Not Found");
             }
     })
+    props.resetTimeCount()
     setSearchBoxQuery('')
   }, []);
 

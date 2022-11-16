@@ -112,6 +112,7 @@ const RemovedItems = (props) => {
         setItems(json.result)
         setItemsFetched(true)
       })
+      props.resetTimeCount()
   }, []);
 
   const copyTextToClipboard = (text) => {
@@ -175,7 +176,8 @@ const RemovedItems = (props) => {
     try {
       await writeAdminTxnInDatabase(
         "Item Approved",
-        `Item id : ${nftId} on ${netId == '5'? 'Goerli' : 'Matic'}`,
+        sender,
+        nftId,
         hashes,
         sessionStorage.getItem("loggedInUser")
       );

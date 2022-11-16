@@ -1,0 +1,104 @@
+#dashboardContent {
+    width: 90%;
+    margin: 40px 5%;
+    padding-bottom: 100px;
+}
+
+#dashboardContent #stats{
+    width: 50%;
+    display: flex;
+    margin: 30px 0px;
+}
+
+#dashboardContent #stats a{
+    width: 45%;
+    margin: 10px;
+}
+
+#dashboardContent #stats a #parent{
+    display: flex;
+    margin: auto;
+    border-radius: 18px;
+    padding: 20px;
+    -webkit-box-shadow: 0 0 5px 2px #aaa;
+    -moz-box-shadow: 0 0 5px 2px #aaa;
+    box-shadow: 0 0 5px 2px #aaa;
+    background-image: linear-gradient(96deg, #fcad02 -40%, #ff0041 100%);
+    cursor: pointer;
+}
+
+#dashboardContent #stats #parent:hover{
+    transform: scale(1.1);
+}
+
+#dashboardContent #stats #parent #child{
+    display: block;
+    width: 100%;
+    margin-right: 10px;
+}
+#dashboardContent #stats #parent #statHead{
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    text-align: right;
+    color: white;
+}
+
+#dashboardContent #stats #parent span{
+    display: block;
+    margin-left: auto;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    text-align: right;
+    color: white;
+}
+
+#dashboardContent #stats #parent i{
+    font-size:50px;
+    color: white;
+}
+
+#dashboardContent table{
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+}
+
+#dashboardContent table td, #dashboardContent table th{
+    font-size: 14px;
+    font-family: 'Urbanist', sans-serif;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#dashboardContent table tr:hover{
+    background-color: #ddd;
+}
+
+#dashboardContent table tr #address, #dashboardContent table tr #hashes p{
+    cursor: pointer;
+}
+
+#dashboardContent table tr #address:active, #dashboardContent table tr #hashes p:active{
+    color: red;
+    text-decoration: underline;
+}
+
+#dashboardContent tr:nth-child(odd){background-color: white;}
+
+#dashboardContent tr:nth-child(even){background-color: #f2f2f2;}
+
+#dashboardContent table td p{
+    margin-bottom: 4px;
+}
+
+#dashboardContent table td p span{
+    text-transform: capitalize;
+    font-weight: 600;
+    color: #04091e;
+    text-decoration: underline;
+    text-decoration-color: #04091e;
+}
